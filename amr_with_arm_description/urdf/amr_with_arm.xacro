@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="amr_with_arm">
+
+  <!-- Load mobile robot -->
+  <xacro:include filename="$(find bot_description)/urdf/bot.xacro"/>
+
+  <!-- Load manipulator -->
+  <xacro:include filename="$(find open_manipulator_x_description)/urdf/open_manipulator_x_robot.urdf.xacro"/>
+
+  <!-- Fixed joint to attach arm to AMR -->
+  <joint name="arm_mount" type="fixed">
+    <parent link="base_footprint"/> <!-- Replace with your AMR's base link -->
+    <child link="$(arg prefix)link1"/> <!-- Replace with arm's base link -->
+    <origin xyz="0 0 0.4" rpy="0 0 0"/> <!-- Adjust height and position -->
+  </joint>
+
+</robot>
