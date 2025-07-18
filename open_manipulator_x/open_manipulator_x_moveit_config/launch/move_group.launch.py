@@ -31,9 +31,9 @@ def generate_launch_description():
     # Robot description
     robot_description_config = xacro.process_file(
         os.path.join(
-            get_package_share_directory('open_manipulator_x_description'),
+            get_package_share_directory('amr_with_arm_description'),
             'urdf',
-            'open_manipulator_x_robot.urdf.xacro',
+            'amr_with_arm.xacro',
         )
     )
     robot_description = {'robot_description': robot_description_config.toxml()}

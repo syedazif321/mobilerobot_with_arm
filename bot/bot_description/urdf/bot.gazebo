@@ -42,8 +42,8 @@
 
       <update_rate>50</update_rate>
 
-      <left_joint>Revolute3</left_joint>
-      <right_joint>Revolute1</right_joint>
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
 
       <wheel_separation>0.4</wheel_separation>
       <wheel_diameter>0.1</wheel_diameter>
