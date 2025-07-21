@@ -9,12 +9,16 @@ controller_manager:
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
+    linear_guide_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
     gripper_controller:
       type: position_controllers/GripperActionController
 
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
+# Arm controller for joints of manipulator
 arm_controller:
   ros__parameters:
     use_sim_time: True
@@ -43,6 +47,33 @@ arm_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
+# Linear guide prismatic joint controller (separate)
+linear_guide_controller:
+  ros__parameters:
+    use_sim_time: True
+    joints:
+      - linear_guide_prismatic_joint
+
+    interface_name: position
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: true
+    open_loop_control: true
+    allow_integration_in_goal_trajectories: true
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+
+# Gripper controller
 gripper_controller:
   ros__parameters:
     use_sim_time: True
@@ -60,6 +91,7 @@ gripper_controller:
       stopped_velocity_tolerance: 0.01
       goal_time: 0.0
 
+# Diff drive controller
 diff_drive_controller:
   ros__parameters:
     use_sim_time: True

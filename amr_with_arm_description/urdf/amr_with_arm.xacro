@@ -4,17 +4,20 @@
   <!-- Load mobile robot -->
   <xacro:include filename="$(find bot_description)/urdf/bot.xacro"/>
 
+  <!-- Load linear guide -->
+  <xacro:include filename="$(find amr_with_arm_description)/urdf/linear_guide.xacro"/>
+
   <!-- Load manipulator -->
   <xacro:include filename="$(find open_manipulator_x_description)/urdf/open_manipulator_x_robot.urdf.xacro"/>
 
-  <!-- Fixed joint to attach arm to AMR -->
+  <!-- Attach arm to linear guide moving base -->
   <joint name="arm_mount" type="fixed">
-    <parent link="base_footprint"/>
+    <parent link="linear_guide_base"/>
     <child link="$(arg prefix)link1"/>
     <origin xyz="-0.1 0 0.08" rpy="0 0 3.1416"/>
   </joint>
 
-  <!-- ros2_control for AMR base (diff drive) -->
+  <!-- ROS2 Control for mobile robot (diff drive) -->
   <ros2_control name="amr_base_system" type="system">
     <hardware>
       <plugin>gazebo_ros2_control/GazeboSystem</plugin>
@@ -33,12 +36,20 @@
     </joint>
   </ros2_control>
 
-  <!-- ros2_control for arm -->
+  <!-- ROS2 Control for arm and linear guide -->
   <ros2_control name="amr_with_arm_arm_system" type="system">
     <hardware>
       <plugin>gazebo_ros2_control/GazeboSystem</plugin>
     </hardware>
 
+    <!-- Linear guide prismatic joint -->
+    <joint name="linear_guide_prismatic_joint">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <!-- OpenManipulator X joints -->
     <joint name="joint1">
       <command_interface name="position"/>
       <state_interface name="position"/>
@@ -59,6 +70,7 @@
       <state_interface name="position"/>
       <state_interface name="velocity"/>
     </joint>
+
   </ros2_control>
 
 </robot>

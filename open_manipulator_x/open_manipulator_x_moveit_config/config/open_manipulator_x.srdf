@@ -35,4 +35,8 @@
     <disable_collisions link1="link3" link2="link4" reason="Adjacent"/>
     <disable_collisions link1="link4" link2="link5" reason="Adjacent"/>
     <disable_collisions link1="base_footprint" link2="link1" reason="Adjacent"/>
+    <disable_collisions link1="base_footprint" link2="linear_guide_base" reason="Adjacent"/>
+    <disable_collisions link1="base_footprint" link2="linear_guide_column" reason="Adjacent"/>
+    <disable_collisions link1="linear_guide_column" link2="link1" reason="Adjacent"/>
+    <disable_collisions link1="linear_guide_column" link2="link1" reason="Adjacent"/>
 </robot>

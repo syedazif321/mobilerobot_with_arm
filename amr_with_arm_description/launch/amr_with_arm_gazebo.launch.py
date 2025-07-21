@@ -7,6 +7,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import Command, PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
 
@@ -21,11 +22,14 @@ def generate_launch_description():
         'no_roof_small_warehouse.world'
     )
 
-    # Generate robot description from xacro
-    robot_description_content = Command([
-        'xacro ',
-        os.path.join(amr_with_arm_description_pkg, 'urdf', 'amr_with_arm.xacro')
-    ])
+    # Generate robot description from xacro (FIXED)
+    robot_description_content = ParameterValue(
+        Command([
+            'xacro ',
+            os.path.join(amr_with_arm_description_pkg, 'urdf', 'amr_with_arm.xacro')
+        ]),
+        value_type=str
+    )
 
     # Declare world launch argument
     world_arg = DeclareLaunchArgument(
@@ -83,6 +87,14 @@ def generate_launch_description():
         output='screen'
     )
 
+    controller_manager_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'linear_guide_controller','--controller-manager', '/controller_manager'],
+    )
+
+
     # Static TF world -> base_footprint
     static_tf = Node(
         package='tf2_ros',
@@ -121,8 +133,9 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         diff_drive_controller_spawner,
         arm_controller_spawner,
-        spawn_entity,
+        controller_manager_spawner,
         static_tf,
+        spawn_entity,
         move_group,
         rviz
     ])
